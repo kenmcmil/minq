@@ -60,7 +60,7 @@ This should produce something like this:
     Result =  820123456789abcdefdeadbeefff000001
     Result2 =  820123456789abcdefdeadbeefff000001
     PASS
-    ok  	github.com/ekr/minq	1.285s
+    ok  	github.com/kenmcmil/minq	1.285s
 
 It's the "ok" at the end that's important.
 
@@ -68,7 +68,7 @@ There are two test programs that live in ```minq/bin/client``` and
 ```minq/bin/server```. The server is an echo server that upcases the
 returned data. The client is just a passthrough.
 
-In ```${GOPATH}/src/github.com/ekr```, doing
+In ```${GOPATH}/src/github.com/kenmcmil```, doing
 
     go run minq/bin/server/main.go
     go run minq/bin/client/main.go
