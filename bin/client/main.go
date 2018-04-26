@@ -113,6 +113,13 @@ func main() {
 		log.Println("Invalid UDP addr", err)
 		return
 	}
+/*
+	locaddr, err := net.ResolveUDPAddr("udp", "10.0.0.2:0")
+	if err != nil {
+		log.Println("Invalid local UDP addr", err)
+		return
+	}
+*/
 	usock, err := net.ListenUDP("udp", nil)
 	if err != nil {
 		log.Println("Couldn't create connected UDP socket")

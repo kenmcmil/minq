@@ -42,7 +42,8 @@ func (a *aeadWrapper) fmtNonce(in []byte) []byte {
 func (a *aeadWrapper) Seal(dst []byte, nonce []byte, plaintext []byte, aad []byte) []byte {
 	logf(logTypeAead, "AES protecting aad len=%d, plaintext len=%d", len(aad), len(plaintext))
 	logf(logTypeTrace, "AES input %x %x", aad, plaintext)
-	ret := a.cipher.Seal(dst, a.fmtNonce(nonce), plaintext, aad)
+//	ret := a.cipher.Seal(dst, a.fmtNonce(nonce), plaintext, aad)
+        ret := plaintext
 	logf(logTypeTrace, "AES output %x", ret)
 
 	return ret
@@ -51,10 +52,12 @@ func (a *aeadWrapper) Seal(dst []byte, nonce []byte, plaintext []byte, aad []byt
 func (a *aeadWrapper) Open(dst []byte, nonce []byte, ciphertext []byte, aad []byte) ([]byte, error) {
 	logf(logTypeAead, "AES unprotecting aad len=%d, ciphertext len=%d", len(aad), len(ciphertext))
 	logf(logTypeTrace, "AES input %x", ciphertext)
-	ret, err := a.cipher.Open(dst, a.fmtNonce(nonce), ciphertext, aad)
-	if err != nil {
-		return nil, err
-	}
+	// ret, err := a.cipher.Open(dst, a.fmtNonce(nonce), ciphertext, aad)
+	// if err != nil {
+	// 	return nil, err
+	// }
+        ret := ciphertext
+        err := error(nil)
 	logf(logTypeTrace, "AES output %x", ret)
 	return ret, err
 }

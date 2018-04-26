@@ -1784,23 +1784,29 @@ func (c *Connection) setupAeadMasking() (err error) {
 
 // Called when the handshake is complete.
 func (c *Connection) handshakeComplete() (err error) {
-	var sendLabel, recvLabel string
-	if c.role == RoleClient {
-		sendLabel = clientPpSecretLabel
-		recvLabel = serverPpSecretLabel
-	} else {
-		sendLabel = serverPpSecretLabel
-		recvLabel = clientPpSecretLabel
-	}
+	// var sendLabel, recvLabel string
+	// if c.role == RoleClient {
+	// 	sendLabel = clientPpSecretLabel
+	// 	recvLabel = serverPpSecretLabel
+	// } else {
+	// 	sendLabel = serverPpSecretLabel
+	// 	recvLabel = clientPpSecretLabel
+	// }
 
-	c.writeProtected, err = newCryptoStateFromTls(c.tls, sendLabel)
-	if err != nil {
-		return
-	}
-	c.readProtected, err = newCryptoStateFromTls(c.tls, recvLabel)
-	if err != nil {
-		return
-	}
+	// c.writeProtected, err = newCryptoStateFromTls(c.tls, sendLabel)
+	// if err != nil {
+	// 	return
+	// }
+	// c.readProtected, err = newCryptoStateFromTls(c.tls, recvLabel)
+	// if err != nil {
+	// 	return
+	// }
+
+        // attempt to disable crypto
+
+        c.writeProtected = c.writeClear 
+        c.readProtected = c.readClear 
+
 	c.setState(StateEstablished)
 
 	return nil
