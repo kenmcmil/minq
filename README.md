@@ -39,9 +39,9 @@ certificates.
 
 
     cd ${GOPATH}/src
-    go get github.com/ekr/minq
+    go get github.com/kenmcmil/minq
     cd github.com/bifurcation/mint
-    cd ../../ekr/minq
+    cd ../../kenmcmil/minq
     go test
 
 This should produce something like this:
