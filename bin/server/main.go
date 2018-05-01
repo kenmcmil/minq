@@ -7,7 +7,7 @@ import (
 	"flag"
 	"fmt"
 	"github.com/cloudflare/cfssl/helpers"
-	"github.com/ekr/minq"
+	"github.com/kenmcmil/minq"
 	"io"
 	"io/ioutil"
 	"log"
