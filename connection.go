@@ -955,9 +955,9 @@ func (c *Connection) input(p []byte) error {
 
 	if c.state == StateClosing {
 		c.log(logTypeConnection, "Discarding packet while closing (closePacket=%v)", c.closePacket != nil)
-		if c.closePacket != nil {
-			c.transport.Send(c.closePacket)
-		}
+//		if c.closePacket != nil {
+//			c.transport.Send(c.closePacket)
+//		}
 		return ErrorConnIsClosing
 	}
 

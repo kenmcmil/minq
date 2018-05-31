@@ -19,6 +19,7 @@ var httpCount int
 var heartbeat int
 var cpuProfile string
 var mutex sync.Mutex
+var testNum int
 
 type connHandler struct {
 	bytesRead int
@@ -88,6 +89,7 @@ func main() {
 	flag.IntVar(&httpCount, "httpCount", 1, "Number of parallel HTTP requests to start")
 	flag.IntVar(&heartbeat, "heartbeat", 0, "heartbeat frequency [ms]")
 	flag.StringVar(&cpuProfile, "cpuprofile", "", "write cpu profile to file")
+	flag.IntVar(&testNum, "test", 1, "Number of test to run")
 	flag.Parse()
 
 	if cpuProfile != "" {
@@ -186,9 +188,53 @@ func main() {
 		}
 	}()
 
-        streams[0].Write([]byte("foo\n"))
-        streams[0].Reset(0)
-        streams[0].Write([]byte("bar\n"))
+
+        if testNum == 1 {
+                streams[0].Write([]byte("foo\n"))
+                streams[0].Reset(0)
+                streams[0].Write([]byte("bar\n"))
+        }
+        if testNum == 2 {
+                streams[0].Write([]byte("foo\n"))
+                conn.Close()
+                // Following shows a bug as the connection close packet is resent with the same
+                // packet number.
+                streams[0].Write([]byte("bar\n"))
+        }
+
+        if testNum == 3 {
+                streams[0].Write([]byte("foo\n"))
+                conn.Close()
+        }
+
+        if testNum == 4 {
+                b := make([]byte, 8196)
+                for index, _ := range b {
+                        b[index] = '!'
+                }
+                streams[0].Write(b)
+                streams[0].Write(b)
+                conn.Close()
+        }
+        if testNum == 5 {
+        	tstreams := make([]minq.Stream, 16)
+	        for i := 0; i < 16; i++ {
+                        for {
+                                mutex.Lock()
+                                tstreams[i] = conn.CreateStream()
+                                mutex.Unlock()
+                                if tstreams[i] != nil {
+                                        break
+                                }
+                        }                               
+
+                }
+                mutex.Lock()
+                tstreams[15].Write([]byte("foo\n"))
+                mutex.Unlock()
+        }
+
+        os.Stdout.Write([]byte("finished\n"))
 
 	// Read from stdin.
          for {
